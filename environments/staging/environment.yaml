@@ -1,0 +1,68 @@
+terraform_backend:
+  bucket: ""
+  region: "us-east-1"
+  encrypt: true
+  dynamodb_table: ""
+
+aws_config:
+  region: "us-east-1"
+
+project_config:
+  name: "cila-platform"
+  environment: "staging"
+
+modules_enabled:
+  vpc: false
+  iam: false
+  oidc: false
+  jenkins_sg: false
+  k8s_master_sg: false
+  k8s_worker_sg: false
+  tools_sg: false
+  monitoring_sg: false
+  ec2_cluster: false
+  nexus_sonarqube: false
+  monitoring: false
+  ecs_fargate: false
+  eks: false
+  alb: false
+  autoscaling: false
+  rds: false
+  rotation_lambda: false
+  s3: false
+  kms: false
+  observability: false
+  route53_acm: false
+  efs: false
+  ecr: false
+
+remote_state:
+  vpc:
+    bucket: ""
+    key: ""
+    region: "us-east-1"
+  iam:
+    bucket: ""
+    key: ""
+    region: "us-east-1"
+
+oidc_config:
+  enable_github_oidc: false
+  providers_config: []
+
+iam_config:
+  enable_instance_profiles: false
+  project_config:
+    name: "cila-platform"
+    environment: "staging"
+  names: {}
+
+vpc_config:
+  enabled: false
+  project_config:
+    name: "cila-platform"
+    environment: "staging"
+  cidr: "10.100.0.0/16"
+
+# Optional stack configs follow same schema as terraform-module templates.
+# Keep sensitive values in Vault/Secrets Manager.

@@ -1,0 +1,24 @@
+name: Infra Environments CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+      - name: fmt
+        run: terraform fmt -check -recursive
+      - name: validate stacks
+        run: |
+          set -euo pipefail
+          for d in environments/staging/stacks/*; do
+            terraform -chdir="$d" init -backend=false
+            terraform -chdir="$d" validate
+          done
