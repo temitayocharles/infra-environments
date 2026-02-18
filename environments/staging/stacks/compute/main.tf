@@ -13,5 +13,5 @@ module "ecs_fargate" {
 module "eks" {
   count               = try(local.env.modules_enabled.eks, false) ? 1 : 0
   source              = "git::https://github.com/temitayocharles/terraform-module.git//module/eks-practice?ref=main"
-  eks_practice_config = local.env.eks_practice_config
+  eks_practice_config = local.env.eks_config
 }
