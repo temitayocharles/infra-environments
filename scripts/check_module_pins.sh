@@ -5,7 +5,13 @@ ROOT="${1:-.}"
 PATTERN='git::https://github.com/temitayocharles/terraform-module.git//module/'
 
 # Ensure every terraform-module source is pinned with ?ref=vX.Y.Z and never tracks main/master/HEAD.
-violations=$(rg -n "$PATTERN" "$ROOT" -g '*.tf' | while IFS=: read -r file line text; do
+if command -v rg >/dev/null 2>&1; then
+  finder_cmd=(rg -n "$PATTERN" "$ROOT" -g '*.tf')
+else
+  finder_cmd=(sh -c "grep -RIn --include='*.tf' '$PATTERN' '$ROOT'")
+fi
+
+violations=$("${finder_cmd[@]}" | while IFS=: read -r file line text; do
   src="$text"
   if [[ "$src" != *"?ref="* ]]; then
     echo "$file:$line missing ?ref= pin"
