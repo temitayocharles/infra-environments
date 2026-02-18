@@ -21,3 +21,8 @@ This repo composes reusable modules from [terraform-module](https://github.com/t
 - All module sources must be pinned to a release tag: `?ref=vX.Y.Z`.
 - Floating refs (`main`, `master`, `HEAD`) are blocked in CI by [`scripts/check_module_pins.sh`](./scripts/check_module_pins.sh).
 - Current baseline is `v1.0.0` from [`terraform-module`](https://github.com/temitayocharles/terraform-module/releases/tag/v1.0.0).
+
+
+## Architecture Maps
+- [DEPENDENCY_LADDER.md](./DEPENDENCY_LADDER.md)
+- [ARCHITECTURE.md](./ARCHITECTURE.md)
