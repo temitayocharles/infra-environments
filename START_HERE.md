@@ -26,3 +26,18 @@ terraform apply
 ```
 
 Repeat stack-by-stack in order.
+
+
+## 8. Upgrade Module Version
+1. Create or pick a new release tag in `terraform-module` (example: `v1.1.0`).
+2. Update all `source = "git::...terraform-module...?...ref=vX.Y.Z"` pins in this repo.
+3. Run:
+```bash
+./scripts/check_module_pins.sh .
+terraform fmt -recursive
+for d in environments/staging/stacks/*; do
+  terraform -chdir="$d" init -backend=false
+  terraform -chdir="$d" validate
+done
+```
+4. Commit and merge after CI is green.

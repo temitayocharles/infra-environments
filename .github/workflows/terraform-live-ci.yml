@@ -15,6 +15,10 @@ jobs:
           terraform_version: 1.9.8
       - name: fmt
         run: terraform fmt -check -recursive
+
+      - name: Enforce module source pinning
+        run: ./scripts/check_module_pins.sh .
+
       - name: validate stacks
         run: |
           set -euo pipefail
