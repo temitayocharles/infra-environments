@@ -16,6 +16,7 @@ This repo composes reusable modules from [terraform-module](https://github.com/t
 - This repo is the environment layer (stateful, deployable).
 - Reusable modules remain in `terraform-module`.
 - Local clusters can use MinIO as an S3-compatible backend after the bootstrap handoff is complete.
+- Caller stacks can discover upstream stack outputs through `remote_state` so subnet IDs, VPC IDs, security groups, and instance profiles do not have to be copied into environment values when a producing stack already exports them.
 
 
 ## Module Version Pinning
@@ -35,3 +36,11 @@ This repo composes reusable modules from [terraform-module](https://github.com/t
 - After Argo CD brings up MinIO, local state can be migrated to the S3-compatible backend example at:
   - `/Users/charlie/Desktop/_work/infra-environments/environments/staging/backend/bootstrap-minio.hcl.example`
 - Cloud environments should continue using AWS S3 backends.
+
+## Stack Auto-Discovery
+- `vpc` publishes `vpc_id` and `subnet_ids`
+- `iam` publishes instance profile names
+- `security` publishes security group IDs
+- `database` publishes RDS endpoint, security group, and rotation Lambda ARN
+- `storage` publishes S3 bucket name, ECR repository URL, and optional EFS file system ID
+- `compute`, `database`, and `storage` can consume those outputs through `remote_state` when the corresponding backend entries are configured in `environment.yaml`

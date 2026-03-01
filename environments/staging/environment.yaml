@@ -49,6 +49,30 @@ remote_state:
     region: "us-east-1"
     encrypt: true
     dynamodb_table: ""
+  security:
+    bucket: ""
+    key: ""
+    region: "us-east-1"
+    encrypt: true
+    dynamodb_table: ""
+  compute:
+    bucket: ""
+    key: ""
+    region: "us-east-1"
+    encrypt: true
+    dynamodb_table: ""
+  storage:
+    bucket: ""
+    key: ""
+    region: "us-east-1"
+    encrypt: true
+    dynamodb_table: ""
+  database:
+    bucket: ""
+    key: ""
+    region: "us-east-1"
+    encrypt: true
+    dynamodb_table: ""
 
 oidc_config:
   enable_github_oidc: false

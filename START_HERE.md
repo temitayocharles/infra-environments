@@ -18,6 +18,8 @@
 6. [environments/staging/stacks/database](./environments/staging/stacks/database)
 7. [environments/staging/stacks/storage](./environments/staging/stacks/storage)
 
+Stack consumers should prefer upstream `remote_state` outputs over copied IDs in environment values whenever a producing stack already exists.
+
 ## 4. Example commands
 ```bash
 cd environments/staging/stacks/vpc
