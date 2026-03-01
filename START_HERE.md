@@ -50,5 +50,8 @@ done
   - `eks`: discover the target cluster through AWS EKS
   - `kubeconfig`: use a local kubeconfig path/context for VM or local clusters
 - Repository passwords/tokens are passed through `argocd_repo_passwords` at plan/apply time and are not stored in git.
+- For local clusters, the first bootstrap run should use local state or `terraform init -backend=false`.
+- After GitOps brings up MinIO, local state can be migrated to the S3-compatible backend example at:
+  - `/Users/charlie/Desktop/_work/infra-environments/environments/staging/backend/bootstrap-minio.hcl.example`
 
 - AWS credentials are only required when `auth_mode: eks`.

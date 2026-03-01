@@ -15,6 +15,7 @@ This repo composes reusable modules from [terraform-module](https://github.com/t
 ## Notes
 - This repo is the environment layer (stateful, deployable).
 - Reusable modules remain in `terraform-module`.
+- Local clusters can use MinIO as an S3-compatible backend after the bootstrap handoff is complete.
 
 
 ## Module Version Pinning
@@ -28,3 +29,9 @@ This repo composes reusable modules from [terraform-module](https://github.com/t
 - [ARCHITECTURE.md](./ARCHITECTURE.md)
 
 - AWS credentials are only required when `auth_mode: eks`.
+
+## Local MinIO Backend
+- The bootstrap stack should start with local state or `terraform init -backend=false` when MinIO is not available yet.
+- After Argo CD brings up MinIO, local state can be migrated to the S3-compatible backend example at:
+  - `/Users/charlie/Desktop/_work/infra-environments/environments/staging/backend/bootstrap-minio.hcl.example`
+- Cloud environments should continue using AWS S3 backends.
