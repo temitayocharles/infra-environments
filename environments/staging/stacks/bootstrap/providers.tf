@@ -18,8 +18,15 @@ terraform {
 }
 
 locals {
-  env          = yamldecode(file("${path.module}/../../environment.yaml"))
-  cluster_name = try(local.env.argocd_bootstrap_config.cluster_name, local.env.eks_config.name)
+  env                = yamldecode(file("${path.module}/../../environment.yaml"))
+  bootstrap_config   = local.env.argocd_bootstrap_config
+  auth_mode          = try(local.bootstrap_config.auth_mode, "eks")
+  bootstrap_enabled  = try(local.env.modules_enabled.argocd_bootstrap, false)
+  use_eks            = local.bootstrap_enabled && local.auth_mode == "eks"
+  use_kubeconfig     = local.bootstrap_enabled && local.auth_mode == "kubeconfig"
+  cluster_name       = try(local.bootstrap_config.cluster_name, local.env.eks_config.name)
+  kubeconfig_path    = try(local.bootstrap_config.kubeconfig_path, null)
+  kubeconfig_context = try(local.bootstrap_config.kubeconfig_context, null)
 }
 
 provider "aws" {
@@ -27,23 +34,29 @@ provider "aws" {
 }
 
 data "aws_eks_cluster" "this" {
-  name = local.cluster_name
+  count = local.use_eks ? 1 : 0
+  name  = local.cluster_name
 }
 
 data "aws_eks_cluster_auth" "this" {
-  name = local.cluster_name
+  count = local.use_eks ? 1 : 0
+  name  = local.cluster_name
 }
 
 provider "kubernetes" {
-  host                   = data.aws_eks_cluster.this.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
-  token                  = data.aws_eks_cluster_auth.this.token
+  host                   = local.use_eks ? try(data.aws_eks_cluster.this[0].endpoint, null) : null
+  cluster_ca_certificate = local.use_eks ? try(base64decode(data.aws_eks_cluster.this[0].certificate_authority[0].data), null) : null
+  token                  = local.use_eks ? try(data.aws_eks_cluster_auth.this[0].token, null) : null
+  config_path            = local.use_kubeconfig ? local.kubeconfig_path : null
+  config_context         = local.use_kubeconfig ? local.kubeconfig_context : null
 }
 
 provider "helm" {
   kubernetes {
-    host                   = data.aws_eks_cluster.this.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
-    token                  = data.aws_eks_cluster_auth.this.token
+    host                   = local.use_eks ? try(data.aws_eks_cluster.this[0].endpoint, null) : null
+    cluster_ca_certificate = local.use_eks ? try(base64decode(data.aws_eks_cluster.this[0].certificate_authority[0].data), null) : null
+    token                  = local.use_eks ? try(data.aws_eks_cluster_auth.this[0].token, null) : null
+    config_path            = local.use_kubeconfig ? local.kubeconfig_path : null
+    config_context         = local.use_kubeconfig ? local.kubeconfig_context : null
   }
 }
