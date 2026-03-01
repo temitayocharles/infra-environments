@@ -30,7 +30,11 @@ locals {
 }
 
 provider "aws" {
-  region = local.env.aws_config.region
+  region                      = local.env.aws_config.region
+  skip_credentials_validation = local.use_kubeconfig
+  skip_requesting_account_id  = local.use_kubeconfig
+  skip_metadata_api_check     = local.use_kubeconfig
+  skip_region_validation      = local.use_kubeconfig
 }
 
 data "aws_eks_cluster" "this" {

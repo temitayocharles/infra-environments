@@ -50,3 +50,5 @@ done
   - `eks`: discover the target cluster through AWS EKS
   - `kubeconfig`: use a local kubeconfig path/context for VM or local clusters
 - Repository passwords/tokens are passed through `argocd_repo_passwords` at plan/apply time and are not stored in git.
+
+- AWS credentials are only required when `auth_mode: eks`.

@@ -26,3 +26,5 @@ This repo composes reusable modules from [terraform-module](https://github.com/t
 ## Architecture Maps
 - [DEPENDENCY_LADDER.md](./DEPENDENCY_LADDER.md)
 - [ARCHITECTURE.md](./ARCHITECTURE.md)
+
+- AWS credentials are only required when `auth_mode: eks`.
