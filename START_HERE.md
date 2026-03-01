@@ -14,8 +14,9 @@
 2. [environments/staging/stacks/iam](./environments/staging/stacks/iam)
 3. [environments/staging/stacks/security](./environments/staging/stacks/security)
 4. [environments/staging/stacks/compute](./environments/staging/stacks/compute)
-5. [environments/staging/stacks/database](./environments/staging/stacks/database)
-6. [environments/staging/stacks/storage](./environments/staging/stacks/storage)
+5. [environments/staging/stacks/bootstrap](./environments/staging/stacks/bootstrap)
+6. [environments/staging/stacks/database](./environments/staging/stacks/database)
+7. [environments/staging/stacks/storage](./environments/staging/stacks/storage)
 
 ## 4. Example commands
 ```bash
