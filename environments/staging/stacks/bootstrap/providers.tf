@@ -31,6 +31,8 @@ locals {
 
 provider "aws" {
   region                      = local.env.aws_config.region
+  access_key                  = local.use_kubeconfig ? "bootstrap-local" : null
+  secret_key                  = local.use_kubeconfig ? "bootstrap-local" : null
   skip_credentials_validation = local.use_kubeconfig
   skip_requesting_account_id  = local.use_kubeconfig
   skip_metadata_api_check     = local.use_kubeconfig
